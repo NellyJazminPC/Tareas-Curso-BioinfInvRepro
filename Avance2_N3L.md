@@ -1,6 +1,6 @@
-#### Avance 2					
+## Avance 2					
 
-### _Querido diario..._
+#### _Querido diario..._
 
 * Ya tengo los datos con los que voy a trabajar:  Ocho archivos de transcriptomas en formato .fastq, 4 en forward y 4 en reverse, de dos genotipos en dos condiciones diferentes, aportados por el Laboratorio de Bioquímica molecular, UBIPRO, FES Iztacala.
 
@@ -8,13 +8,18 @@
 | Actividades por realizar | % hecho | Problemas?
 |--------------|-----------|-----------|
 |Obtuve la última imagen de Trinity en Docker|  Hecho | Hasta ahora ninguno :)
-|Comprobar si se instaló correctamente|  50% | Lo instalé primero en  
+|Comprobar si se instaló correctamente|  Hecho | Todo bien 
+|Montar un volumen que contenga los datos de los transcriptomas| Hecho | Todo tranquilo 
+|Acceder a las herramientas de Trinity| Hecho | Use algunos comandos para probarlo
+|Limpieza de datos| Hecho | Con Fastqc
+|Ensamblaje| En teoría... | En proceso
 
-Comandos utilizados:
- `sudo docker pull trinityrnaseq/trinityrnaseq`
-` docker run --rm -v`pwd`:`pwd` trinityrnaseq/trinityrnaseq Trinity \ --seqType fq --single `pwd`/reads.fq.gz \ --max_memory 1G --CPU 4 --output `pwd`/trinity_out_dir `
-
-
+### Comandos utilizados:
+*  `sudo docker pull trinityrnaseq/trinityrnaseq`
+* `sudo docker run -it trinityrnaseq/trinityrnaseq /bin/bash`
+* ` docker run --rm -v $rutadatos:/data trinityrnaseq/trinityrnaseq Trinity \ --seqType fq --single transcriptoma1.fq.gz \ --max_memory 1G --CPU 4 --output /trinity_out_dir `
+* `docker run -v $rutadatos:/data trinityrnaseq/trinityrnaseq \
+     /usr/local/src/trinityrnaseq/util/align_and_estimate_abundance.pl`
 
 #### Artículos consultados
 
