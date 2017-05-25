@@ -8,11 +8,11 @@ library(gdsfmt)
 library(SNPRelate)
 
 #VCF a GDS
-vcf.fn <- "../data/SNP/Hypsiboas2.vcf"
-snpgdsVCF2GDS(vcf50pb2, "../data/SNP/50pb2.gds", method="biallelic.only")
-snpgdsSummary("../data/SNP/50pb2.gds") 
+vcf.fn <- "../data/SNP/prueba.vcf"
+snpgdsVCF2GDS(vcf50pb2, "../data/SNP/prueba.gds", method="biallelic.only")
+snpgdsSummary("../data/SNP/prueba.gds") 
 #Abrir el archivo GDS
-genofile <- snpgdsOpen("../data/SNP/Hypsi.gds")
+genofile <- snpgdsOpen("../data/SNP/prueba.gds")
 #Informacion de las Poblaciones
 pop_code <- scan("../data/SNP/pop.txt", what=character())
 table(pop_code)
