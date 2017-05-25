@@ -1,0 +1,88 @@
+# Tutoral de SNPrelate
+
+Limpiar environment
+```{r}
+
+rm(list=ls())
+
+```
+
+Paqueterias
+
+```{r}
+
+library(gdsfmt)
+library(SNPRelate)
+
+```
+VCF a GDS
+```{r}
+vcf.fn <- "../data/SNP/prueba.vcf"
+snpgdsVCF2(vcf.fn, "../data/SNP/prueba.gds", method="biallelic.only")
+snpgdsSummary("../data/SNP/pruebagds")
+```
+
+Abrir el archivo GDS
+```{r}
+genofile <- snpgdsOpen("../data/SNP/prueba.gds")
+```
+Informacion de la poblaciones
+```{r}
+pop_code <- scan("../data/SNP/pop.txt", what=character())
+table(pop_code)
+head(pop_code)
+```
+ID 
+```{r}
+sample.id <- read.gdsn(index.gdsn(genofile, "sample.id"))
+sample.id
+```
+PCA
+```{r}
+pca <- snpgdsPCA(genofile, sample.id = NULL, snp.id = NULL, autosome.only = F, num.thread=2)
+```
+
+Proporción de la varianza
+```{r}
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+```
+Creación de data.frame
+```{r}
+tab <- data.frame(sample.id = pca$sample.id, EV1 = pca$eigenvect[,1], EV2 = pca$eigenvect[,2], stringsAsFactors = FALSE)
+head (tab)
+```
+
+Plot
+```{r}
+plot(tab$EV2, tab$EV1, xlab="eigenvector 2", ylab="eigenvector 1")
+```
+
+Revisar muestras y poblaciones tengan el mismo orden
+```{r}
+sample.id
+pop_code
+head(cbind(sample.id, pop_code))
+```
+
+Nuevo data.frame con los datos anteriores
+```{r}
+tab <- data.frame(sample.id = pca$sample.id,
+                  pop = factor(pop_code)[match(pca$sample.id, sample.id)],
+                  EV1 = pca$eigenvect[,1],    
+                  EV2 = pca$eigenvect[,2],    
+                  stringsAsFactors = FALSE)
+head(tab)
+```
+
+Paleta de colores
+```{r}
+palette(c("red", "green", "blue"))
+```
+
+Plot final
+```{r}
+plot(tab$EV2, tab$EV1, col=as.integer(tab$pop), xlab="eigenvector 2", ylab="eigenvector 1")
+legend("bottomright", legend=levels(tab$pop), pch="o", col=1:nlevels(tab$pop))
+
+```
